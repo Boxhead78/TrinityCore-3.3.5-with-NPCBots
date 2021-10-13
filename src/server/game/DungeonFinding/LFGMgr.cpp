@@ -44,6 +44,7 @@
 #include "botcommon.h"
 #include "botmgr.h"
 #include "Chat.h"
+#include "Creature.h"
 //end npcbot
 
 namespace lfg

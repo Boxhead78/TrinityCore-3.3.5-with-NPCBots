@@ -10,7 +10,8 @@ NpcBot System by Trickerer (onlysuffering@gmail.com)
 class TeleportHomeEvent;
 class TeleportFinishEvent;
 
-class CleanDamage;
+struct CleanDamage;
+class Vehicle;
 
 class bot_ai : public CreatureAI
 {
