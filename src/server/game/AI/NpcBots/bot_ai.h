@@ -15,7 +15,7 @@ NpcBot System by Trickerer (onlysuffering@gmail.com)
 class TeleportHomeEvent;
 class TeleportFinishEvent;
 
-enum CombatRating;
+enum CombatRating : int32;
 enum MeleeHitOutcome : uint8;
 
 struct CleanDamage;
