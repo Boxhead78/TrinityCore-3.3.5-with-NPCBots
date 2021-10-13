@@ -497,7 +497,7 @@ void LFGMgr::JoinLfg(Player* player, uint8 roles, LfgDungeonSet& dungeons, const
                             break;
                         }
 
-                        if (Creature* bot = ObjectAccessor::GetCreature(*plrg, itr->first))
+                        if (/*Creature* bot = */ObjectAccessor::GetCreature(*plrg, itr->first))
                         {
                             //if (!(bot->GetBotRoles() & ( 1 | 2 | 4 ))) //(BOT_ROLE_TANK | BOT_ROLE_DPS | BOT_ROLE_HEAL)
                             //{

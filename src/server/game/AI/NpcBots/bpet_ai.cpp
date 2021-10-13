@@ -2317,7 +2317,9 @@ void bot_pet_ai::KillEvents(bool /*force*/)
 
 bool bot_pet_ai::IsChanneling(Unit const* u/* = nullptr*/) const
 {
-    if (!u) u = me; return u->GetCurrentSpell(CURRENT_CHANNELED_SPELL);
+    if (!u)
+        u = me;
+    return u->GetCurrentSpell(CURRENT_CHANNELED_SPELL);
 }
 bool bot_pet_ai::IsCasting(Unit const* u/* = nullptr*/) const
 {
