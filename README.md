@@ -5,7 +5,7 @@
 3.3.5
 :------------:
 [![3.3.5 Build Status](https://travis-ci.org/TrinityCore/TrinityCore.svg?branch=3.3.5)](https://travis-ci.com/github/trickerer/TrinityCore-3.3.5-with-NPCBots)
-[![Build status](https://ci.appveyor.com/api/projects/status/54d0u1fxe50ad80o/branch/3.3.5?svg=true)](https://ci.appveyor.com/project/DDuarte/trinitycore/branch/3.3.5)
+[![Build status](https://ci.appveyor.com/api/projects/status/54d0u1fxe50ad80o/branch/3.3.5?svg=true)](https://ci.appveyor.com/project/trickerer/trinitycore-3-3-5-with-npcbots/branch/CI)
 
 ## Introduction
 
