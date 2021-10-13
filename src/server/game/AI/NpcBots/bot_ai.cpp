@@ -334,8 +334,8 @@ bool bot_ai::SetBotOwner(Player* newowner)
     bool takeMoney = (_ownerGuid != newowner->GetGUID().GetCounter());
     if (mgr->AddBot(me, takeMoney) & BOT_ADD_FATAL)
     {
-        //TC_LOG_ERROR("entities.player", "bot_ai::SetBotOwner(): player %s (%u) can't add bot %s (FATAL), removing...",
-        //    master->GetName().c_str(), master->GetGUID().GetCounter(), me->GetName().c_str());
+        //TC_LOG_ERROR("entities.player", "bot_ai::SetBotOwner(): player %s (%s) can't add bot %s (FATAL), removing...",
+        //    master->GetName().c_str(), master->GetGUID().ToString().c_str(), me->GetName().c_str());
         //failed to add bot
         //if (_ownerGuid)
         //{
@@ -348,8 +348,8 @@ bool bot_ai::SetBotOwner(Player* newowner)
 
         if (_ownerGuid)
         {
-            TC_LOG_ERROR("entities.player", "bot_ai::SetBotOwner(): %s's master %s (guid: %u) is found but bot failed to set owner (fatal)! Unbinding bot temporarily (until server restart)...",
-                me->GetName().c_str(), newowner->GetName().c_str(), newowner->GetGUID().GetCounter());
+            TC_LOG_ERROR("entities.player", "bot_ai::SetBotOwner(): %s's master %s (%s) is found but bot failed to set owner (fatal)! Unbinding bot temporarily (until server restart)...",
+                me->GetName().c_str(), newowner->GetName().c_str(), newowner->GetGUID().ToString().c_str());
             //_ownerGuid = 0;
 
             SetBotCommandState(BOT_COMMAND_FULLSTOP); //prevent all actions
@@ -10080,8 +10080,8 @@ bool bot_ai::_equip(uint8 slot, Item* newItem, ObjectGuid::LowType receiver)
     if (newItem->GetState() == ITEM_REMOVED)
     {
         TC_LOG_ERROR("entities.player",
-            "minion_ai::_equip(): player %s (guidLow: %u) is trying to make bot %s (id: %u) equip item: %s (id: %u, guidLow: %u) which has state ITEM_REMOVED!",
-            master->GetName().c_str(), master->GetGUID().GetCounter(), me->GetName().c_str(), me->GetEntry(), proto->Name1.c_str(), proto->ItemId, newItem->GetGUID().GetCounter());
+            "minion_ai::_equip(): player %s (%s) is trying to make bot %s (id: %u) equip item: %s (id: %u, %s) which has state ITEM_REMOVED!",
+            master->GetName().c_str(), master->GetGUID().ToString().c_str(), me->GetName().c_str(), me->GetEntry(), proto->Name1.c_str(), proto->ItemId, newItem->GetGUID().ToString().c_str());
         return false;
     }
 
@@ -10114,8 +10114,8 @@ bool bot_ai::_equip(uint8 slot, Item* newItem, ObjectGuid::LowType receiver)
             //BotWhisper(msg.str().c_str());
 
             TC_LOG_ERROR("entities.player",
-                "minion_ai::_equip(): player %s (guidLow: %u) is trying to make bot %s (id: %u) equip item: %s (id: %u, guidLow: %u) but either does not have this item or does not own it",
-                master->GetName().c_str(), master->GetGUID().GetCounter(), me->GetName().c_str(), me->GetEntry(), proto->Name1.c_str(), proto->ItemId, newItem->GetGUID().GetCounter());
+                "minion_ai::_equip(): player %s (%s) is trying to make bot %s (id: %u) equip item: %s (id: %u, %s) but either does not have this item or does not own it",
+                master->GetName().c_str(), master->GetGUID().ToString().c_str(), me->GetName().c_str(), me->GetEntry(), proto->Name1.c_str(), proto->ItemId, newItem->GetGUID().ToString().c_str());
             return false;
         }
 
@@ -10229,8 +10229,8 @@ bool bot_ai::_resetEquipment(uint8 slot, ObjectGuid::LowType receiver)
 
     if (!_equip(slot, stItem, receiver))
     {
-        TC_LOG_ERROR("entities.player", "minion_ai::_resetEquipment(): player %s (guidLow: %u) failed to reset equipment for bot %s (id: %u) in slot %u",
-            master->GetName().c_str(), master->GetGUID().GetCounter(), me->GetName().c_str(), me->GetEntry(), slot);
+        TC_LOG_ERROR("entities.player", "minion_ai::_resetEquipment(): player %s (%s) failed to reset equipment for bot %s (id: %u) in slot %u",
+            master->GetName().c_str(), master->GetGUID().ToString().c_str(), me->GetName().c_str(), me->GetEntry(), slot);
         return false;
     }
     return true;
@@ -12748,8 +12748,8 @@ void bot_ai::JustDied(Unit*)
 
     if (IsTempBot())
     {
-        //TC_LOG_ERROR("entities.player", "Unsummoning temp bot %s (guidLow: %u), owner: %s (guidLow: %u)...",
-        //    me->GetName().c_str(), me->GetGUID().GetCounter(), master->GetName().c_str(), master->GetGUID().GetCounter());
+        //TC_LOG_ERROR("entities.player", "Unsummoning temp bot %s (%s), owner: %s (%s)...",
+        //    me->GetName().c_str(), me->GetGUID().ToString().c_str(), master->GetName().c_str(), master->GetGUID().ToString().c_str());
 
         if (!IAmFree())
             master->GetBotMgr()->RemoveBot(me->GetGUID(), BOT_REMOVE_UNSUMMON);
