@@ -957,7 +957,6 @@ public:
                 if (chil->IsAffectedOnSpell(spellInfo))
                     crit_chance += 100.f;
 
-
             //Subversion: 9% additional critical chance for Blood Strike, Scourge Strike, Heart Strike and Obliterate
             if (baseId == BLOOD_STRIKE_1 || baseId == HEART_STRIKE_1 || baseId == SCOURGE_STRIKE_1 || baseId == OBLITERATE_1)
                 crit_chance += 9.f;
@@ -1757,7 +1756,6 @@ public:
             //    //Runic Power Mastery rank 2
             //    mast->ChangeAmount(1300);
             //}
-
 
             if (botPet && botPet->GetPowerType() != POWER_ENERGY)
                 botPet->SetByteValue(UNIT_FIELD_BYTES_0, 3, POWER_ENERGY);
