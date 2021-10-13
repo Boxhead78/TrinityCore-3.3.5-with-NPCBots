@@ -1,6 +1,8 @@
 #include "bot_ai.h"
 #include "botmgr.h"
+#include "Log.h"
 #include "MotionMaster.h"
+#include "ObjectAccessor.h"
 #include "Player.h"
 #include "ScriptMgr.h"
 #include "SpellAuras.h"

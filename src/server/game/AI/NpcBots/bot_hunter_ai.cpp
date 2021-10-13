@@ -4,12 +4,14 @@
 #include "Group.h"
 #include "Map.h"
 #include "MotionMaster.h"
+#include "ObjectAccessor.h"
 #include "Player.h"
 #include "ScriptMgr.h"
 #include "Spell.h"
 #include "SpellAuraEffects.h"
 #include "SpellMgr.h"
 #include "TemporarySummon.h"
+#include "World.h"
 /*
 Hunter NpcBot (reworked by Trickerer onlysuffering@gmail.com)
 Complete - around 95%

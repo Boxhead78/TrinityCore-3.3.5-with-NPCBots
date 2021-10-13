@@ -1,5 +1,6 @@
 #include "bot_ai.h"
 #include "botmgr.h"
+#include "Creature.h"
 #include "Group.h"
 #include "Item.h"
 #include "Map.h"
@@ -9,6 +10,7 @@
 #include "SpellAuraEffects.h"
 #include "Spell.h"
 #include "SpellMgr.h"
+#include "WorldSession.h"
 /*
 Rogue NpcBot (reworked by Trickerer onlysuffering@gmail.com)
 Complete - 90%

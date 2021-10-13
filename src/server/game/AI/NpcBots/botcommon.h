@@ -2,6 +2,7 @@
 #define _BOTCOMMON_H
 
 #include "SharedDefines.h"
+#include "SpellAuraDefines.h"
 
 #include <utility>
 #include <vector>

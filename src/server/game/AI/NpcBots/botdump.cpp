@@ -13,7 +13,11 @@
 
 #include "botdump.h"
 #include "botdatamgr.h"
+#include "DatabaseEnv.h"
+#include "Log.h"
 #include "ObjectMgr.h"
+
+#include <sstream>
 
 class BotStringTransaction
 {

@@ -2,14 +2,18 @@
 #include "botmgr.h"
 #include "Group.h"
 #include "Item.h"
+#include "Log.h"
 #include "Map.h"
 #include "MotionMaster.h"
+#include "ObjectAccessor.h"
+#include "ObjectMgr.h"
 #include "Player.h"
 #include "ScriptMgr.h"
 #include "SpellAuraEffects.h"
 #include "Spell.h"
 #include "SpellMgr.h"
 #include "Totem.h"
+#include "WorldSession.h"
 /*
 Shaman NpcBot (reworked by Trickerer onlysuffering@gmail.com)
 Complete - around 90%

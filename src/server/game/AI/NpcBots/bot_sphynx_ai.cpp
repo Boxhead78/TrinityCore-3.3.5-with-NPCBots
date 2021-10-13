@@ -1,6 +1,7 @@
 #include "bot_ai.h"
 #include "bot_GridNotifiers.h"
 #include "botmgr.h"
+#include "Creature.h"
 #include "ScriptMgr.h"
 /*
 Obsidian Destroyer NpcBot (by Trickerer onlysuffering@gmail.com)

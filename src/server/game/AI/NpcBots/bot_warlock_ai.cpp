@@ -1,6 +1,7 @@
 #include "bot_ai.h"
 #include "botmgr.h"
 #include "Group.h"
+#include "Log.h"
 #include "Map.h"
 #include "MotionMaster.h"
 #include "Player.h"
@@ -9,6 +10,7 @@
 #include "SpellAuraEffects.h"
 #include "SpellMgr.h"
 #include "TemporarySummon.h"
+#include "World.h"
 /*
 Warlock NpcBot (reworked by Trickerer onlysuffering@gmail.com)
 Complete - 85%

@@ -5,6 +5,7 @@
 #include "Spell.h"
 #include "SpellAuras.h"
 #include "TemporarySummon.h"
+#include "World.h"
 /*
 Archmage NpcBot (by Trickerer onlysuffering@gmail.com)
 Description:

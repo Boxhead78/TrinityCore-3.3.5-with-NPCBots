@@ -281,7 +281,7 @@ public:
             if (CCed(damageinfo.Target))
                 pctbonus *= 1.5f;
 
-            damageinfo.Damages[0].Damage *= pctbonus;
+            damageinfo.Damages[0].Damage = uint32(damageinfo.Damages[0].Damage * pctbonus);
         }
 
         void ApplyClassDamageMultiplierSpell(int32& damage, SpellNonMeleeDamage& damageinfo, SpellInfo const* spellInfo, WeaponAttackType /*attackType*/, bool crit) const override

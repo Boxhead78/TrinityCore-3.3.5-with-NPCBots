@@ -3,6 +3,7 @@
 #include "botdatamgr.h"
 #include "botmgr.h"
 #include "Creature.h"
+#include "Log.h"
 #include "Player.h"
 #include "ScriptedGossip.h"
 #include "ScriptMgr.h"
