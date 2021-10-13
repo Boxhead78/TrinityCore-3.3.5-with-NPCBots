@@ -3,6 +3,9 @@
 
 #include "CreatureAI.h"
 #include "botcommon.h"
+
+#include <queue>
+
 /*
 NpcBot System by Trickerer (onlysuffering@gmail.com)
 */
@@ -11,6 +14,7 @@ class TeleportHomeEvent;
 class TeleportFinishEvent;
 
 struct CleanDamage;
+class EventProcessor;
 class Vehicle;
 
 class bot_ai : public CreatureAI

@@ -1,6 +1,8 @@
 #ifndef _BOTCOMMON_H
 #define _BOTCOMMON_H
 
+#include "SharedDefines.h"
+
 #include <utility>
 #include <vector>
 
