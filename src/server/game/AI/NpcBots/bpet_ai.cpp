@@ -2346,9 +2346,13 @@ uint32 bot_pet_ai::GetLostHP(Unit const* unit)
 }
 uint8 bot_pet_ai::GetHealthPCT(Unit const* u)
 {
-    if (!u || !u->IsAlive() || u->GetMaxHealth() <= 1) return 100; return uint8(((float(u->GetHealth()))/u->GetMaxHealth()) * 100);
+    if (!u || !u->IsAlive() || u->GetMaxHealth() <= 1)
+        return 100;
+    return uint8(((float(u->GetHealth()))/u->GetMaxHealth()) * 100);
 }
 uint8 bot_pet_ai::GetManaPCT(Unit const* u)
 {
-    if (!u || !u->IsAlive() || u->GetMaxPower(POWER_MANA) <= 1) return 100; return (u->GetPower(POWER_MANA)*10/(1 + u->GetMaxPower(POWER_MANA)/10));
+    if (!u || !u->IsAlive() || u->GetMaxPower(POWER_MANA) <= 1)
+        return 100;
+    return (u->GetPower(POWER_MANA)*10/(1 + u->GetMaxPower(POWER_MANA)/10));
 }
