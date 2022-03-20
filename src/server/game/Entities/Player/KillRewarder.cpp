@@ -168,6 +168,15 @@ inline void KillRewarder::_RewardXP(Player* player, float rate)
         }
         //end npcbot
 
+        // Boxhead Custom | Add more xp for rares
+        if (Creature* victim = _victim->ToCreature())
+        {
+            if (victim->GetCreatureTemplate()->rank == CREATURE_ELITE_RARE || victim->GetCreatureTemplate()->rank == CREATURE_ELITE_RAREELITE)
+            {
+                xp *= 20;
+            }
+        }
+
         // 4.2.3. Give XP to player.
         player->GiveXP(xp, _victim, _groupRate);
         if (Pet* pet = player->GetPet())
