@@ -73,6 +73,7 @@ float _botStatLimits_crit;
 float _mult_dmg_physical;
 float _mult_dmg_spell;
 float _mult_healing;
+float _mult_health;
 
 bool __firstload = true;
 
@@ -198,6 +199,7 @@ void BotMgr::LoadConfig(bool reload)
     _mult_dmg_physical              = sConfigMgr->GetFloatDefault("NpcBot.Mult.Damage.Physical", 1.0f);
     _mult_dmg_spell                 = sConfigMgr->GetFloatDefault("NpcBot.Mult.Damage.Spell", 1.0f);
     _mult_healing                   = sConfigMgr->GetFloatDefault("NpcBot.Mult.Healing", 1.0f);
+    _mult_health                    = sConfigMgr->GetFloatDefault("NpcBot.Mult.Health", 1.0f);
     _enableNpcBotsDungeons          = sConfigMgr->GetBoolDefault("NpcBot.Enable.Dungeon", true);
     _enableNpcBotsRaids             = sConfigMgr->GetBoolDefault("NpcBot.Enable.Raid", false);
     _enableNpcBotsBGs               = sConfigMgr->GetBoolDefault("NpcBot.Enable.BG", false);
@@ -234,9 +236,11 @@ void BotMgr::LoadConfig(bool reload)
     _mult_dmg_physical              = std::max<float>(_mult_dmg_physical, 0.1f);
     _mult_dmg_spell                 = std::max<float>(_mult_dmg_spell, 0.1f);
     _mult_healing                   = std::max<float>(_mult_healing,   0.1f);
+    _mult_health                    = std::max<float>(_mult_health,    0.1f);
     _mult_dmg_physical              = std::min<float>(_mult_dmg_physical, 10.f);
     _mult_dmg_spell                 = std::min<float>(_mult_dmg_spell, 10.f);
     _mult_healing                   = std::min<float>(_mult_healing,   10.f);
+    _mult_health                    = std::min<float>(_mult_health,    10.f);
 
     //exclusions
     uint8 dpsFlags = /*_offTankingTargetIconFlags | */_dpsTargetIconFlags | _rangedDpsTargetIconFlags;
@@ -1554,3 +1558,8 @@ float BotMgr::GetBotHealingMod()
 {
     return _mult_healing;
 }
+float BotMgr::GetBotHealthMod()
+{
+    return _mult_health;
+}
+

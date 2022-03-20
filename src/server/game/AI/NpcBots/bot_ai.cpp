@@ -5673,6 +5673,9 @@ void bot_ai::_OnHealthUpdate() const
     if (bonuspct)
         m_totalhp = (m_totalhp * (100 + bonuspct)) / 100;
 
+    //Add Health Multiplier
+    m_totalhp *= GetBotHealthMod();
+
     //m_totalhp = float(uint32(m_totalhp) - (uint32(m_totalhp) % 10));
     me->SetStatFlatModifier(UNIT_MOD_HEALTH, BASE_VALUE, float(m_totalhp)); //replaces base hp at max lvl
     me->UpdateMaxHealth(); //will use our values we just set (update base health and buffs)

@@ -4273,6 +4273,7 @@ NpcBot.NoDPSTargetIconMask = 64
 NpcBot.Mult.Damage.Physical = 1.0
 NpcBot.Mult.Damage.Spell    = 1.0
 NpcBot.Mult.Healing         = 1.0
+NpcBot.Mult.Health          = 1.0
 
 #
 #    NpcBot.Enable.Dungeon
