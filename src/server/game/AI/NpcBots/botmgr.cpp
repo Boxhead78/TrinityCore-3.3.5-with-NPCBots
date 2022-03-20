@@ -1106,12 +1106,12 @@ uint32 BotMgr::GetNpcBotCost(uint8 level, uint8 botclass)
         case BOT_CLASS_ARCHMAGE:
         case BOT_CLASS_SPELLBREAKER:
         case BOT_CLASS_NECROMANCER:
-            cost += cost; //200%
+            cost += cost * 10; //200%
             break;
         case BOT_CLASS_SPHYNX:
         case BOT_CLASS_DREADLORD:
         case BOT_CLASS_DARK_RANGER:
-            cost += cost * 4; //500%
+            cost += cost * 25; //500%
             break;
         default:
             break;
