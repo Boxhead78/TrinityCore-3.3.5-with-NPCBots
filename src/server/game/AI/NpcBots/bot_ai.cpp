@@ -5656,6 +5656,9 @@ void bot_ai::_OnHealthUpdate() const
     uint32 m_totalhp = m_basehp + int32(hp_add); //m_totalhp = uint32(float(m_basehp + hp_add) * stammod);
     //TC_LOG_ERROR("entities.player", "total base health: %u", m_totalhp);
 
+    //Add Health Multiplier
+    m_totalhp *= BotMgr::GetBotHealthMod();
+
     //hp bonuses
     uint8 bonuspct = 0;
     //Endurance Training
@@ -5672,9 +5675,6 @@ void bot_ai::_OnHealthUpdate() const
         bonuspct += 20;
     if (bonuspct)
         m_totalhp = (m_totalhp * (100 + bonuspct)) / 100;
-
-    //Add Health Multiplier
-    m_totalhp *= GetBotHealthMod();
 
     //m_totalhp = float(uint32(m_totalhp) - (uint32(m_totalhp) % 10));
     me->SetStatFlatModifier(UNIT_MOD_HEALTH, BASE_VALUE, float(m_totalhp)); //replaces base hp at max lvl
