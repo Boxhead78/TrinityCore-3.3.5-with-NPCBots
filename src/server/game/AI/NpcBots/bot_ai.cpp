@@ -5727,6 +5727,9 @@ void bot_ai::_OnManaUpdate() const
     //m_basemana += IAmFree() ? mylevel * 50.f : 0; //+4000/+0 mana at 80
     m_basemana += _getTotalBotStat(BOT_STAT_MOD_MANA);
 
+    //Add Mana Multiplier
+    m_basemana *= BotMgr::GetBotManaMod();
+
     //mana bonuses
     uint8 bonuspct = 0;
     //Fel Vitality

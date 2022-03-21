@@ -74,6 +74,7 @@ float _mult_dmg_physical;
 float _mult_dmg_spell;
 float _mult_healing;
 float _mult_health;
+float _mult_mana;
 
 bool __firstload = true;
 
@@ -200,6 +201,7 @@ void BotMgr::LoadConfig(bool reload)
     _mult_dmg_spell                 = sConfigMgr->GetFloatDefault("NpcBot.Mult.Damage.Spell", 1.0f);
     _mult_healing                   = sConfigMgr->GetFloatDefault("NpcBot.Mult.Healing", 1.0f);
     _mult_health                    = sConfigMgr->GetFloatDefault("NpcBot.Mult.Health", 1.0f);
+    _mult_mana                      = sConfigMgr->GetFloatDefault("NpcBot.Mult.Mana", 1.0f);
     _enableNpcBotsDungeons          = sConfigMgr->GetBoolDefault("NpcBot.Enable.Dungeon", true);
     _enableNpcBotsRaids             = sConfigMgr->GetBoolDefault("NpcBot.Enable.Raid", false);
     _enableNpcBotsBGs               = sConfigMgr->GetBoolDefault("NpcBot.Enable.BG", false);
@@ -237,10 +239,12 @@ void BotMgr::LoadConfig(bool reload)
     _mult_dmg_spell                 = std::max<float>(_mult_dmg_spell, 0.1f);
     _mult_healing                   = std::max<float>(_mult_healing,   0.1f);
     _mult_health                    = std::max<float>(_mult_health,    0.1f);
+    _mult_mana                      = std::max<float>(_mult_mana,      0.1f);
     _mult_dmg_physical              = std::min<float>(_mult_dmg_physical, 10.f);
     _mult_dmg_spell                 = std::min<float>(_mult_dmg_spell, 10.f);
     _mult_healing                   = std::min<float>(_mult_healing,   10.f);
     _mult_health                    = std::min<float>(_mult_health,    10.f);
+    _mult_mana                      = std::min<float>(_mult_mana,      10.f);
 
     //exclusions
     uint8 dpsFlags = /*_offTankingTargetIconFlags | */_dpsTargetIconFlags | _rangedDpsTargetIconFlags;
@@ -1558,8 +1562,14 @@ float BotMgr::GetBotHealingMod()
 {
     return _mult_healing;
 }
+//Boxhead: HealthMod
 float BotMgr::GetBotHealthMod()
 {
     return _mult_health;
+}
+//Boxhead: ManaMod
+float BotMgr::GetBotManaMod()
+{
+    return _mult_mana;
 }
 

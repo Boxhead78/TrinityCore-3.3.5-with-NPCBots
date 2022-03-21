@@ -4265,6 +4265,8 @@ NpcBot.NoDPSTargetIconMask = 64
 #    NpcBot.Mult.Damage.Physical
 #    NpcBot.Mult.Damage.Spell
 #    NpcBot.Mult.Healing
+#    NpcBot.Mult.Health
+#    NpcBot.Mult.Mana
 #        Description: Multipliers for bots' damage and healing. Allows to balance bots vs players.
 #        Default:     1.0
 #        Minimum:     0.1
@@ -4274,6 +4276,7 @@ NpcBot.Mult.Damage.Physical = 1.0
 NpcBot.Mult.Damage.Spell    = 1.0
 NpcBot.Mult.Healing         = 1.0
 NpcBot.Mult.Health          = 1.0
+NpcBot.Mult.Mana            = 1.0
 
 #
 #    NpcBot.Enable.Dungeon

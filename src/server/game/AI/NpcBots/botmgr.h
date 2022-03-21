@@ -111,6 +111,7 @@ class BotMgr
         static float GetBotDamageModSpell();
         static float GetBotHealingMod();
         static float GetBotHealthMod();
+        static float GetBotManaMod();
 
         void Update(uint32 diff);
 
