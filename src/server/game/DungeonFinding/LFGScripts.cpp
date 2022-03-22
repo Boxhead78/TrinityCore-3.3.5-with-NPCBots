@@ -30,6 +30,9 @@
 #include "ScriptMgr.h"
 #include "SharedDefines.h"
 #include "WorldSession.h"
+//NPCBOT
+#include "bot_ai.h"
+#include "botmgr.h"
 
 namespace lfg
 {
@@ -77,6 +80,26 @@ void LFGPlayerScript::OnLogin(Player* player, bool /*loginFirst*/)
 void LFGPlayerScript::OnMapChanged(Player* player)
 {
     Map const* map = player->GetMap();
+
+    //NPCBOT
+    Group* group = player->GetGroup();
+    if ((!group) || (!map->IsDungeon()))
+    {
+        NpcBotRegistry _alldungeonbots = sLFGMgr->GetDungeonFinderBots();
+        if (_alldungeonbots.size() > 0)
+        {
+            for (NpcBotRegistry::const_iterator ci = _alldungeonbots.begin(); ci != _alldungeonbots.end(); ++ci)
+            {
+                Creature const* bot = *ci;
+                if (!bot->GetBotAI()->IAmFree())
+                {
+                    bot->GetBotAI()->ResetBotAI(BOTAI_RESET_LFG);
+                    player->GetBotMgr()->RemoveBot(bot->GetGUID(), BOT_REMOVE_DISMISS);
+                }
+                sLFGMgr->RemoveDungeonFinderBotFromList(bot);
+            }
+        }
+    }
 
     if (sLFGMgr->inLfgDungeonMap(player->GetGUID(), map->GetId(), map->GetDifficulty()))
     {
@@ -214,6 +237,24 @@ void LFGGroupScript::OnDisband(Group* group)
     TC_LOG_DEBUG("lfg", "LFGScripts::OnDisband [%s]", gguid.ToString().c_str());
 
     sLFGMgr->RemoveGroupData(gguid);
+
+    /*
+    //NPCBOT
+    NpcBotRegistry _alldungeonbots = sLFGMgr->GetDungeonFinderBots();
+    if (_alldungeonbots.size() > 0)
+    {
+        for (NpcBotRegistry::const_iterator ci = _alldungeonbots.begin(); ci != _alldungeonbots.end(); ++ci)
+        {
+            Creature const* bot = *ci;
+            if (!bot->GetBotOwner()->GetSession()->PlayerLoading() && !bot->GetBotOwner()->GetMap()->IsDungeon())
+            {
+                bot->GetBotAI()->ResetBotAI(BOTAI_RESET_LFG);
+                sLFGMgr->RemoveDungeonFinderBotFromList(bot);
+                bot->GetBotOwner()->GetBotMgr()->RemoveBot(bot->GetGUID(), BOT_REMOVE_DISMISS);
+            }
+        }
+    }
+    */
 }
 
 void LFGGroupScript::OnChangeLeader(Group* group, ObjectGuid newLeaderGuid, ObjectGuid oldLeaderGuid)

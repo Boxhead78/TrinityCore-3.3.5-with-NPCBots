@@ -40,7 +40,7 @@ public:
         {
             if (!sLFGMgr->IsSoloLFG())
             {
-            sLFGMgr->ToggleSoloLFG();
+                sLFGMgr->ToggleSoloLFG();
             }
         }
    }

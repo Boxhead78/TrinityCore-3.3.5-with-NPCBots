@@ -417,9 +417,9 @@ bool bot_ai::SetBotOwner(Player* newowner)
     return true;
 }
 //Check if should totally unlink from owner
-void bot_ai::CheckOwnerExpiry()
+void bot_ai::CheckOwnerExpiry(bool force)
 {
-    if (!BotMgr::GetOwnershipExpireTime())
+    if (!BotMgr::GetOwnershipExpireTime() && !force)
         return; //disabled
 
     NpcBotData const* npcBotData = BotDataMgr::SelectNpcBotData(me->GetEntry());
@@ -441,7 +441,7 @@ void bot_ai::CheckOwnerExpiry()
     time_t lastLoginTime = fields ? time_t(fields[0].GetUInt32()) : timeNow;
 
     //either expired or owner does not exist
-    if (timeNow >= lastLoginTime + expireTime)
+    if ((timeNow >= lastLoginTime + expireTime) || force)
     {
         std::string name = "unknown";
         sCharacterCache->GetCharacterNameByGuid(ownerGuid, name);
@@ -525,7 +525,9 @@ void bot_ai::ResetBotAI(uint8 resetType)
     if (resetType & BOTAI_RESET_MASK_ABANDON_MASTER)
         _ownerGuid = 0;
     if (resetType == BOTAI_RESET_INIT)
-        CheckOwnerExpiry();
+        CheckOwnerExpiry(false);
+    if (resetType == BOTAI_RESET_LFG)
+        CheckOwnerExpiry(true);
     if (resetType == BOTAI_RESET_LOGOUT)
         _saveStats();
 

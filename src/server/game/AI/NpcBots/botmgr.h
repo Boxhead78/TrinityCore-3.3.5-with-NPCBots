@@ -74,6 +74,7 @@ class BotMgr
         static bool IsPvPEnabled();
         static bool IsFoodInterruptedByMovement();
         static bool FilterRaces();
+        static bool FillNpcBotsDungeons();
         static uint8 GetMaxClassBots();
         static uint8 GetHealTargetIconFlags();
         static uint8 GetOffTankTargetIconFlags();
@@ -187,6 +188,8 @@ class BotMgr
         //TELEPORT BETWEEN MAPS
         //CONFIRMEND UNSAFE (charmer,owner)
         static void TeleportBot(Creature* bot, Map* newMap, Position* pos);
+
+        static void SetBotTalentsForDungeon(Creature const* bot, uint32 botrole);
 
         AoeSpotsVec const& GetAoeSpots() const { return _aoespots; }
         AoeSpotsVec& GetAoeSpots() { return _aoespots; }

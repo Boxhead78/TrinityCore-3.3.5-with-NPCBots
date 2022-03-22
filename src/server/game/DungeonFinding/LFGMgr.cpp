@@ -42,10 +42,14 @@
 #include "WorldSession.h"
 
 //npcbot
+#include "bot_ai.h"
 #include "botcommon.h"
 #include "botmgr.h"
 #include "Chat.h"
 #include "Creature.h"
+#include "botdatamgr.h"
+
+extern NpcBotRegistry _existingBots;
 //end npcbot
 
 int8 DESERTER_CONF;
@@ -1072,6 +1076,118 @@ void LFGMgr::MakeNewGroup(LfgProposal const& proposal)
             continue;
 
         //npcbot - handle player's bots
+        //Boxhead: Spawn random bots into group
+        LfgProposalPlayerContainer botContainer;
+        uint8 botsNeeded = 5 - players.size();
+        if (BotMgr::FillNpcBotsDungeons() && botsNeeded > 0)
+        {
+            NpcBotRegistry allBots = _existingBots;
+            while (botsNeeded > 0)
+            {
+                //Better way for this?
+                NpcBotRegistry::const_iterator ci = allBots.begin();
+                std::advance(ci, urand(0, allBots.size() - 1));
+                Creature const* bot = *ci;
+                bot_ai const* ai = bot->GetBotAI();
+
+                //Group is full
+                if (botsNeeded == 0 || allBots.size() == 0)
+                {
+                    if (allBots.size() == 0)
+                        TC_LOG_ERROR("entities.unit", "HIRE_DBOTS: Not enough NPC-Bots spawned for dungeon finder!");
+
+                    break;
+                }
+
+                if (!bot)
+                {
+                    //possible but still
+                    TC_LOG_ERROR("entities.unit", "HIRE_NBOT_ENTRY: bot %u not found!", bot->GetEntry());
+                    continue;
+                }
+
+                //Bot is busy, don't Add it
+                if (bot->IsInCombat() || !bot->IsAlive() || bot_ai::CCed(bot) || ai->IsDuringTeleport() ||
+                    bot->HasUnitState(UNIT_STATE_CASTING) || ai->GetBotOwnerGuid() || bot->HasAura(BERSERK))
+                {
+                    continue;
+                }
+
+                //Bot faction is not the same as player
+                if (bot->GetFaction() == player->GetFaction())
+                {
+                    continue;
+                }
+
+                BotMgr* mgr = player->GetBotMgr();
+                if (!mgr)
+                    mgr = new BotMgr(player);
+
+                uint8 botclass = bot->GetBotClass();
+                //Add Tank
+                if (tankPlayers.size() < 1)
+                {
+                    if (botclass == BOT_CLASS_WARRIOR || botclass == BOT_CLASS_PALADIN ||
+                        (botclass == BOT_CLASS_DEATH_KNIGHT && player->GetLevel() >= 55) ||
+                        botclass == BOT_CLASS_DRUID)
+                    {
+                        Unit* cre = ObjectAccessor::GetUnit(*bot, bot->GetGUID());
+                        Creature* newBot = cre->ToCreature();
+                        mgr->AddBot(newBot, false);
+                        players.push_back(newBot->GetGUID());
+                        tankPlayers.push_back(newBot->GetGUID());
+                        _dungeonfinderbots.insert(newBot);
+                        botsNeeded--;
+                        BotMgr::SetBotTalentsForDungeon(bot, BOT_ROLE_TANK);
+                        allBots.erase(bot);
+                        TC_LOG_ERROR("entities.unit", "HIRE_NBOT_ENTRY: bot %s hired as tank!", bot->GetName().c_str());
+                        continue;
+                    }
+                }
+                //Add Heal
+                else if (healPlayers.size() < 1)
+                {
+                    if (botclass == BOT_CLASS_PALADIN || botclass == BOT_CLASS_PRIEST ||
+                        botclass == BOT_CLASS_SHAMAN || botclass == BOT_CLASS_DRUID)
+                    {
+                        Unit* cre = ObjectAccessor::GetUnit(*bot, bot->GetGUID());
+                        Creature* newBot = cre->ToCreature();
+                        mgr->AddBot(newBot, false);
+                        players.push_back(newBot->GetGUID());
+                        healPlayers.push_back(newBot->GetGUID());
+                        _dungeonfinderbots.insert(newBot);
+                        botsNeeded--;
+                        BotMgr::SetBotTalentsForDungeon(bot, BOT_ROLE_HEAL);
+                        allBots.erase(bot);
+                        TC_LOG_ERROR("entities.unit", "HIRE_NBOT_ENTRY: bot %s hired as heal!", bot->GetName());
+                        continue;
+                    }
+                }
+                else if (dpsPlayers.size() < 3)
+                {
+                    if (botclass == BOT_CLASS_WARRIOR || botclass == BOT_CLASS_PALADIN ||
+                        botclass == BOT_CLASS_HUNTER || botclass == BOT_CLASS_ROGUE ||
+                        botclass == BOT_CLASS_PRIEST || botclass == BOT_CLASS_SHAMAN ||
+                        (botclass == BOT_CLASS_DEATH_KNIGHT && player->GetLevel() >= 55) ||
+                        botclass == BOT_CLASS_MAGE || botclass == BOT_CLASS_WARLOCK ||
+                        botclass == BOT_CLASS_DRUID)
+                    {
+                        Unit* cre = ObjectAccessor::GetUnit(*bot, bot->GetGUID());
+                        Creature* newBot = cre->ToCreature();
+                        mgr->AddBot(newBot, false);
+                        players.push_back(newBot->GetGUID());
+                        dpsPlayers.push_back(newBot->GetGUID());
+                        _dungeonfinderbots.insert(newBot);
+                        botsNeeded--;
+                        BotMgr::SetBotTalentsForDungeon(bot, BOT_ROLE_DPS);
+                        allBots.erase(bot);
+                        TC_LOG_ERROR("entities.unit", "HIRE_NBOT_ENTRY: bot %s hired as dps!", bot->GetName());
+                        continue;
+                    }
+                }
+            }
+        }
+
         if (player->HaveBot())
         {
             Group* group = player->GetGroup();
@@ -1246,7 +1362,7 @@ void LFGMgr::UpdateProposal(uint32 proposalId, ObjectGuid guid, bool accept)
         if (itPlayers->second.accept != LFG_ANSWER_AGREE)   // No answer (-1) or not accepted (0)
             allAnswered = false;
 
-    if (!sLFGMgr->IsSoloLFG() && !allAnswered)
+    if (!sLFGMgr->IsSoloLFG() && !BotMgr::FillNpcBotsDungeons() && !allAnswered)
     {
         for (LfgProposalPlayerContainer::const_iterator it = proposal.players.begin(); it != proposal.players.end(); ++it)
             SendLfgUpdateProposal(it->first, proposal);

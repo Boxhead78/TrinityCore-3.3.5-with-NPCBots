@@ -26,6 +26,8 @@
 #include "LFGPlayerData.h"
 #include "SharedDefines.h"
 #include <unordered_map>
+//NPCBOTS
+#include "botdatamgr.h"
 
 class Group;
 class Player;
@@ -309,6 +311,10 @@ class TC_GAME_API LFGMgr
     public:
         static LFGMgr* instance();
 
+        //NPCBOT
+        NpcBotRegistry GetDungeonFinderBots() const { return _dungeonfinderbots; };
+        void RemoveDungeonFinderBotFromList(const Creature* bot) { _dungeonfinderbots.erase(bot); };
+
         // Functions used outside lfg namespace
         void Update(uint32 diff);
 
@@ -483,6 +489,8 @@ class TC_GAME_API LFGMgr
         LfgPlayerBootContainer BootsStore;                 /// Current player kicks
         LfgPlayerDataContainer PlayersStore;               /// Player data
         LfgGroupDataContainer GroupsStore;                 /// Group data
+        //NPCBOT
+        NpcBotRegistry _dungeonfinderbots;
 };
 
 } // namespace lfg

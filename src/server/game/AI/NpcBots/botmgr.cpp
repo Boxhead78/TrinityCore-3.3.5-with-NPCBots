@@ -51,6 +51,7 @@ bool _enableNpcBotsArenas;
 bool _enableDungeonFinder;
 bool _limitNpcBotsDungeons;
 bool _limitNpcBotsRaids;
+bool _fillNpcBotsDungeons;
 bool _botPvP;
 bool _botMovementFoodInterrupt;
 bool _filterRaces;
@@ -209,6 +210,7 @@ void BotMgr::LoadConfig(bool reload)
     _enableDungeonFinder            = sConfigMgr->GetBoolDefault("NpcBot.Enable.DungeonFinder", true);
     _limitNpcBotsDungeons           = sConfigMgr->GetBoolDefault("NpcBot.Limit.Dungeon", true);
     _limitNpcBotsRaids              = sConfigMgr->GetBoolDefault("NpcBot.Limit.Raid", true);
+    _fillNpcBotsDungeons            = sConfigMgr->GetBoolDefault("NpcBot.Fill.Dungeon", false);
     _botInfoPacketsLimit            = sConfigMgr->GetIntDefault("NpcBot.InfoPacketsLimit", -1);
     _npcBotsCost                    = sConfigMgr->GetIntDefault("NpcBot.Cost", 1000000);
     _npcBotUpdateDelayBase          = sConfigMgr->GetIntDefault("NpcBot.UpdateDelay.Base", 0);
@@ -385,6 +387,10 @@ bool BotMgr::IsFoodInterruptedByMovement()
 bool BotMgr::FilterRaces()
 {
     return _filterRaces;
+}
+bool BotMgr::FillNpcBotsDungeons()
+{
+    return _fillNpcBotsDungeons;
 }
 uint8 BotMgr::GetMaxClassBots()
 {
@@ -1572,4 +1578,278 @@ float BotMgr::GetBotManaMod()
 {
     return _mult_mana;
 }
+//Boxhead: Set bot roles and talents in dungeon
+void BotMgr::SetBotTalentsForDungeon(Creature const* bot, uint32 botrole)
+{
+    uint8 botclass = bot->GetBotClass();
 
+    //Do roles
+    uint32 roles;
+
+    //Disable all roles
+    roles = (BOT_ROLE_TANK | BOT_ROLE_TANK_OFF | BOT_ROLE_DPS | BOT_ROLE_HEAL | BOT_ROLE_RANGED);
+    bot->GetBotAI()->ToggleRole(roles, true);
+
+    //Set roles
+    if (botrole == BOT_ROLE_TANK)
+    {
+        bot->GetBotAI()->ToggleRole(BOT_ROLE_TANK, true);
+        bot->GetBotAI()->ToggleRole(BOT_ROLE_DPS, true);
+    }
+
+    if (botrole == BOT_ROLE_HEAL)
+    {
+        bot->GetBotAI()->ToggleRole(BOT_ROLE_HEAL, true);
+    }
+
+    if (botrole == BOT_ROLE_DPS)
+    {
+        bot->GetBotAI()->ToggleRole(BOT_ROLE_DPS, true);
+    }
+
+    //Talents
+    uint8 spec;
+    uint8 rand;
+    //Warrior
+    if (botclass == BOT_CLASS_WARRIOR)
+    {
+        if (botrole == BOT_ROLE_DPS)
+        {
+            rand = urand(0, 1);
+            if (rand == 0)
+            {
+                spec = BOT_SPEC_WARRIOR_ARMS;
+            }
+            else
+            {
+                spec = BOT_SPEC_WARRIOR_FURY;
+            }
+        }
+        if (botrole == BOT_ROLE_TANK)
+        {
+            spec = BOT_SPEC_WARRIOR_PROTECTION;
+        }
+    }
+    //Paladin
+    if (botclass == BOT_CLASS_PALADIN)
+    {
+        if (botrole == BOT_ROLE_DPS)
+        {
+            spec = BOT_SPEC_PALADIN_RETRIBUTION;
+        }
+        if (botrole == BOT_ROLE_TANK)
+        {
+            spec = BOT_SPEC_PALADIN_PROTECTION;
+        }
+        if (botrole == BOT_ROLE_HEAL)
+        {
+            spec = BOT_SPEC_PALADIN_HOLY;
+            bot->GetBotAI()->ToggleRole(BOT_ROLE_RANGED, true);
+        }
+    }
+    //Hunter
+    if (botclass == BOT_CLASS_HUNTER)
+    {
+        if (botrole == BOT_ROLE_DPS)
+        {
+            rand = urand(0, 2);
+            if (rand == 0)
+            {
+                spec = BOT_SPEC_HUNTER_BEASTMASTERY;
+                bot->GetBotAI()->ToggleRole(BOT_ROLE_RANGED, true);
+            }
+            else if (rand == 1)
+            {
+                spec = BOT_SPEC_HUNTER_MARKSMANSHIP;
+                bot->GetBotAI()->ToggleRole(BOT_ROLE_RANGED, true);
+            }
+            else if (rand == 2)
+            {
+                spec = BOT_SPEC_HUNTER_SURVIVAL;
+                bot->GetBotAI()->ToggleRole(BOT_ROLE_RANGED, true);
+            }
+        }
+    }
+    //Rogue
+    if (botclass == BOT_CLASS_ROGUE)
+    {
+        if (botrole == BOT_ROLE_DPS)
+        {
+            rand = urand(0, 2);
+            if (rand == 0)
+            {
+                spec = BOT_SPEC_ROGUE_ASSASINATION;
+            }
+            else if (rand == 1)
+            {
+                spec = BOT_SPEC_ROGUE_COMBAT;
+            }
+            else if (rand == 2)
+            {
+                spec = BOT_SPEC_ROGUE_SUBTLETY;
+            }
+        }
+    }
+    //Priest
+    if (botclass == BOT_CLASS_PRIEST)
+    {
+        if (botrole == BOT_ROLE_DPS)
+        {
+            rand = urand(0, 1);
+            if (rand == 0)
+            {
+                spec = BOT_SPEC_PRIEST_DISCIPLINE;
+                bot->GetBotAI()->ToggleRole(BOT_ROLE_RANGED, true);
+            }
+            else if (rand == 1)
+            {
+                spec = BOT_SPEC_PRIEST_SHADOW;
+                bot->GetBotAI()->ToggleRole(BOT_ROLE_RANGED, true);
+            }
+        }
+        if (botrole == BOT_ROLE_HEAL)
+        {
+            rand = urand(0, 1);
+            if (rand == 0)
+            {
+                spec = BOT_SPEC_PRIEST_DISCIPLINE;
+                bot->GetBotAI()->ToggleRole(BOT_ROLE_RANGED, true);
+            }
+            else if (rand == 1)
+            {
+                spec = BOT_SPEC_PRIEST_HOLY;
+                bot->GetBotAI()->ToggleRole(BOT_ROLE_RANGED, true);
+            }
+        }
+    }
+    //DK
+    if (botclass == BOT_CLASS_DEATH_KNIGHT)
+    {
+        if (botrole == BOT_ROLE_DPS)
+        {
+            rand = urand(0, 1);
+            if (rand == 0)
+            {
+                spec = BOT_SPEC_DK_BLOOD;
+            }
+            else if (rand == 1)
+            {
+                spec = BOT_SPEC_DK_UNHOLY;
+            }
+        }
+        if (botrole == BOT_ROLE_TANK)
+        {
+            rand = urand(0, 2);
+            if (rand == 0)
+            {
+                spec = BOT_SPEC_DK_FROST;
+            }
+            else if (rand == 1)
+            {
+                spec = BOT_SPEC_DK_BLOOD;
+            }
+            else if (rand == 2)
+            {
+                spec = BOT_SPEC_DK_UNHOLY;
+            }
+        }
+    }
+    //Shaman
+    if (botclass == BOT_CLASS_SHAMAN)
+    {
+        if (botrole == BOT_ROLE_DPS)
+        {
+            rand = urand(0, 1);
+            if (rand == 0)
+            {
+                spec = BOT_SPEC_SHAMAN_ELEMENTAL;
+                bot->GetBotAI()->ToggleRole(BOT_ROLE_RANGED, true);
+            }
+            else if (rand == 1)
+            {
+                spec = BOT_SPEC_SHAMAN_ENHANCEMENT;
+            }
+        }
+        if (botrole == BOT_ROLE_HEAL)
+        {
+            spec = BOT_SPEC_SHAMAN_RESTORATION;
+            bot->GetBotAI()->ToggleRole(BOT_ROLE_RANGED, true);
+        }
+    }
+    //Mage
+    if (botclass == BOT_CLASS_MAGE)
+    {
+        if (botrole == BOT_ROLE_DPS)
+        {
+            rand = urand(0, 2);
+            if (rand == 0)
+            {
+                spec = BOT_SPEC_MAGE_ARCANE;
+                bot->GetBotAI()->ToggleRole(BOT_ROLE_RANGED, true);
+            }
+            else if (rand == 1)
+            {
+                spec = BOT_SPEC_MAGE_FIRE;
+                bot->GetBotAI()->ToggleRole(BOT_ROLE_RANGED, true);
+            }
+            else if (rand == 2)
+            {
+                spec = BOT_SPEC_MAGE_FROST;
+                bot->GetBotAI()->ToggleRole(BOT_ROLE_RANGED, true);
+            }
+        }
+    }
+    //Warlock
+    if (botclass == BOT_CLASS_WARLOCK)
+    {
+        if (botrole == BOT_ROLE_DPS)
+        {
+            rand = urand(0, 2);
+            if (rand == 0)
+            {
+                spec = BOT_SPEC_WARLOCK_AFFLICTION;
+                bot->GetBotAI()->ToggleRole(BOT_ROLE_RANGED, true);
+            }
+            else if (rand == 1)
+            {
+                spec = BOT_SPEC_WARLOCK_DEMONOLOGY;
+                bot->GetBotAI()->ToggleRole(BOT_ROLE_RANGED, true);
+            }
+            else if (rand == 2)
+            {
+                spec = BOT_SPEC_WARLOCK_DESTRUCTION;
+                bot->GetBotAI()->ToggleRole(BOT_ROLE_RANGED, true);
+            }
+        }
+    }
+    //Druid
+    if (botclass == BOT_CLASS_DRUID)
+    {
+        if (botrole == BOT_ROLE_DPS)
+        {
+            rand = urand(0, 1);
+            if (rand == 0)
+            {
+                spec = BOT_SPEC_DRUID_BALANCE;
+                bot->GetBotAI()->ToggleRole(BOT_ROLE_RANGED, true);
+            }
+            else if (rand == 1)
+            {
+                spec = BOT_SPEC_DRUID_FERAL;
+            }
+        }
+        if (botrole == BOT_ROLE_TANK)
+        {
+            spec = BOT_SPEC_DRUID_FERAL;
+        }
+        if (botrole == BOT_ROLE_HEAL)
+        {
+            spec = BOT_SPEC_DRUID_RESTORATION;
+            bot->GetBotAI()->ToggleRole(BOT_ROLE_RANGED, true);
+        }
+    }
+
+    bot->GetBotAI()->SetSpec(spec, true);
+
+    //TODO: Remove bots from owner and group after dungeon. iteriate through new bot object list; fix bug: all bots healer symbol
+}
