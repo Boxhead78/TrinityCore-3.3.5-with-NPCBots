@@ -13,6 +13,7 @@
 #include "LFGMgr.h"
 #include "Chat.h"
 #include "Opcodes.h"
+#include "botmgr.h"
 
 class lfg_solo_announce : public PlayerScript
 {

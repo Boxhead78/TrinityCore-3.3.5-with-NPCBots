@@ -82,6 +82,7 @@ void LFGPlayerScript::OnMapChanged(Player* player)
     Map const* map = player->GetMap();
 
     //NPCBOT
+    //Make sure player can't use bots outside of dungeon
     Group* group = player->GetGroup();
     if ((!group) || (!map->IsDungeon()))
     {

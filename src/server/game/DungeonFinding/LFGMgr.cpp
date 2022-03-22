@@ -49,6 +49,8 @@
 #include "Creature.h"
 #include "botdatamgr.h"
 
+using std::pair;
+
 extern NpcBotRegistry _existingBots;
 //end npcbot
 
@@ -1077,7 +1079,7 @@ void LFGMgr::MakeNewGroup(LfgProposal const& proposal)
 
         //npcbot - handle player's bots
         //Boxhead: Spawn random bots into group
-        LfgProposalPlayerContainer botContainer;
+        LfgProposal proposalmod = proposal;
         uint8 botsNeeded = 5 - players.size();
         if (BotMgr::FillNpcBotsDungeons() && botsNeeded > 0)
         {
@@ -1134,13 +1136,19 @@ void LFGMgr::MakeNewGroup(LfgProposal const& proposal)
                         Unit* cre = ObjectAccessor::GetUnit(*bot, bot->GetGUID());
                         Creature* newBot = cre->ToCreature();
                         mgr->AddBot(newBot, false);
+                        //Fill players variables
                         players.push_back(newBot->GetGUID());
                         tankPlayers.push_back(newBot->GetGUID());
+                        //Manually set needed data
+                        LfgProposalPlayer playerproposal;
+                        playerproposal.role = PLAYER_ROLE_TANK;
+                        proposalmod.players.insert(pair<ObjectGuid, LfgProposalPlayer>(newBot->GetGUID(), playerproposal));
                         _dungeonfinderbots.insert(newBot);
                         botsNeeded--;
+                        //Set bot talents and erase it from list
                         BotMgr::SetBotTalentsForDungeon(bot, BOT_ROLE_TANK);
                         allBots.erase(bot);
-                        TC_LOG_ERROR("entities.unit", "HIRE_NBOT_ENTRY: bot %s hired as tank!", bot->GetName().c_str());
+                        //TC_LOG_ERROR("entities.unit", "HIRE_NBOT_ENTRY: bot %s hired as tank!", bot->GetName().c_str());
                         continue;
                     }
                 }
@@ -1153,13 +1161,19 @@ void LFGMgr::MakeNewGroup(LfgProposal const& proposal)
                         Unit* cre = ObjectAccessor::GetUnit(*bot, bot->GetGUID());
                         Creature* newBot = cre->ToCreature();
                         mgr->AddBot(newBot, false);
+                        //Fill players variables
                         players.push_back(newBot->GetGUID());
                         healPlayers.push_back(newBot->GetGUID());
+                        //Manually set needed data
+                        LfgProposalPlayer playerproposal;
+                        playerproposal.role = PLAYER_ROLE_HEALER;
+                        proposalmod.players.insert(pair<ObjectGuid, LfgProposalPlayer>(newBot->GetGUID(), playerproposal));
                         _dungeonfinderbots.insert(newBot);
                         botsNeeded--;
+                        //Set bot talents and erase it from list
                         BotMgr::SetBotTalentsForDungeon(bot, BOT_ROLE_HEAL);
                         allBots.erase(bot);
-                        TC_LOG_ERROR("entities.unit", "HIRE_NBOT_ENTRY: bot %s hired as heal!", bot->GetName());
+                        //TC_LOG_ERROR("entities.unit", "HIRE_NBOT_ENTRY: bot %s hired as heal!", bot->GetName());
                         continue;
                     }
                 }
@@ -1175,13 +1189,19 @@ void LFGMgr::MakeNewGroup(LfgProposal const& proposal)
                         Unit* cre = ObjectAccessor::GetUnit(*bot, bot->GetGUID());
                         Creature* newBot = cre->ToCreature();
                         mgr->AddBot(newBot, false);
+                        //Fill players variables
                         players.push_back(newBot->GetGUID());
                         dpsPlayers.push_back(newBot->GetGUID());
+                        //Manually set needed data
+                        LfgProposalPlayer playerproposal;
+                        playerproposal.role = PLAYER_ROLE_DAMAGE;
+                        proposalmod.players.insert(pair<ObjectGuid, LfgProposalPlayer>(newBot->GetGUID(), playerproposal));
                         _dungeonfinderbots.insert(newBot);
                         botsNeeded--;
+                        //Set bot talents and erase it from list
                         BotMgr::SetBotTalentsForDungeon(bot, BOT_ROLE_DPS);
                         allBots.erase(bot);
-                        TC_LOG_ERROR("entities.unit", "HIRE_NBOT_ENTRY: bot %s hired as dps!", bot->GetName());
+                        //TC_LOG_ERROR("entities.unit", "HIRE_NBOT_ENTRY: bot %s hired as dps!", bot->GetName());
                         continue;
                     }
                 }
@@ -1206,7 +1226,7 @@ void LFGMgr::MakeNewGroup(LfgProposal const& proposal)
             else if (group != grp)
                 grp->AddMember(player);
 
-            grp->SetLfgRoles(pguid, proposal.players.find(pguid)->second.role);
+            grp->SetLfgRoles(pguid, proposalmod.players.find(pguid)->second.role);
 
             // Add the cooldown spell if queued for a random dungeon
 			DESERTER_CONF = sConfigMgr->GetIntDefault("LFG.Deserter", 1);
@@ -1224,7 +1244,7 @@ void LFGMgr::MakeNewGroup(LfgProposal const& proposal)
                     continue;
 
                 player->GetBotMgr()->AddBotToGroup(bot);
-                grp->SetLfgRoles(bguid, proposal.players.find(bguid)->second.role);
+                grp->SetLfgRoles(bguid, proposalmod.players.find(bguid)->second.role);
             }
 
             if (grp->GetMembersCount() >= 5)
@@ -1262,7 +1282,7 @@ void LFGMgr::MakeNewGroup(LfgProposal const& proposal)
         else if (group != grp)
             grp->AddMember(player);
 
-        grp->SetLfgRoles(pguid, proposal.players.find(pguid)->second.role);
+        grp->SetLfgRoles(pguid, proposalmod.players.find(pguid)->second.role);
 
         // Add the cooldown spell if queued for a random dungeon
         const LfgDungeonSet& dungeons = GetSelectedDungeons(player->GetGUID());
