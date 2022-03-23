@@ -1205,6 +1205,8 @@ void LFGMgr::MakeNewGroup(LfgProposal const& proposal)
                         continue;
                     }
                 }
+                //Remove not needed bot from list
+                allBots.erase(bot);
             }
         }
 

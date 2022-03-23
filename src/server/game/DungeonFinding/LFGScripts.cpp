@@ -84,7 +84,7 @@ void LFGPlayerScript::OnMapChanged(Player* player)
     //NPCBOT
     //Make sure player can't use bots outside of dungeon
     Group* group = player->GetGroup();
-    if ((!group) || (!map->IsDungeon()))
+    if (!group || (!map->IsDungeon() && player->isDead()))
     {
         NpcBotRegistry _alldungeonbots = sLFGMgr->GetDungeonFinderBots();
         if (_alldungeonbots.size() > 0)
