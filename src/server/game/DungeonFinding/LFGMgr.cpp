@@ -1116,7 +1116,7 @@ void LFGMgr::MakeNewGroup(LfgProposal const& proposal)
                 }
 
                 //Bot faction is not the same as player
-                if (bot->GetFaction() == player->GetFaction())
+                if (BotMgr::FilterRaces() && bot->GetRaceMask() != player->GetRaceMask())
                 {
                     continue;
                 }
