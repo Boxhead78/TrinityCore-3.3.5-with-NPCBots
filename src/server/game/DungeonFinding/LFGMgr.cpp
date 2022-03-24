@@ -1086,24 +1086,25 @@ void LFGMgr::MakeNewGroup(LfgProposal const& proposal)
             NpcBotRegistry allBots = _existingBots;
             while (botsNeeded > 0)
             {
+                //Group is full or not enough bots
+                if (botsNeeded == 0 || allBots.size() == 0)
+                {
+                    if (allBots.size() == 0)
+                        TC_LOG_ERROR("entities.unit", "HIRE_NBOT_ENTRY: Not enough NPC-Bots spawned for dungeon finder!");
+
+                    break;
+                }
+
                 //Better way for this?
                 NpcBotRegistry::const_iterator ci = allBots.begin();
                 std::advance(ci, urand(0, allBots.size() - 1));
                 Creature const* bot = *ci;
                 bot_ai const* ai = bot->GetBotAI();
 
-                //Group is full
-                if (botsNeeded == 0 || allBots.size() == 0)
-                {
-                    if (allBots.size() == 0)
-                        TC_LOG_ERROR("entities.unit", "HIRE_DBOTS: Not enough NPC-Bots spawned for dungeon finder!");
-
-                    break;
-                }
-
                 if (!bot)
                 {
                     //possible but still
+                    allBots.erase(bot);
                     TC_LOG_ERROR("entities.unit", "HIRE_NBOT_ENTRY: bot %u not found!", bot->GetEntry());
                     continue;
                 }
@@ -1112,12 +1113,15 @@ void LFGMgr::MakeNewGroup(LfgProposal const& proposal)
                 if (bot->IsInCombat() || !bot->IsAlive() || bot_ai::CCed(bot) || ai->IsDuringTeleport() ||
                     bot->HasUnitState(UNIT_STATE_CASTING) || ai->GetBotOwnerGuid() || bot->HasAura(BERSERK))
                 {
+                    allBots.erase(bot);
+                    //TC_LOG_ERROR("entities.unit", "HIRE_NBOT_ENTRY: bot class %u not hired!", bot->GetBotClass());
                     continue;
                 }
 
                 //Bot faction is not the same as player
                 if (BotMgr::FilterRaces() && bot->GetRaceMask() != player->GetRaceMask())
                 {
+                    allBots.erase(bot);
                     continue;
                 }
 
