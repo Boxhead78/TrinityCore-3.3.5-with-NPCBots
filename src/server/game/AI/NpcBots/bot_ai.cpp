@@ -910,7 +910,7 @@ void bot_ai::_calculatePos(Position& pos) const
         angle = float(M_PI) / 6.0f; //max bias (left of right) //total arc is angle * 2
         angle = (angle / tanks) * (slot - (slot % 2)); //bias
         if (slot % 2) angle *= -1.f; //bias interchange
-        mydist = 3.5f;
+        mydist = 12.5f;
     }
     else if (HasRole(BOT_ROLE_RANGED))
     {
