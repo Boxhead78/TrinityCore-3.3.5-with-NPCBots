@@ -1118,8 +1118,8 @@ void LFGMgr::MakeNewGroup(LfgProposal const& proposal)
                     continue;
                 }
 
-                //Bot faction is not the same as player
-                if (BotMgr::FilterRaces() && bot->GetRaceMask() != player->GetRaceMask())
+                if (BotMgr::FilterRaces() && bot->GetBotClass() < BOT_CLASS_EX_START && (bot->GetRaceMask() & RACEMASK_ALL_PLAYABLE) &&
+                    (bot->GetRaceMask() & ((player->GetRaceMask() & RACEMASK_ALLIANCE) ? RACEMASK_ALLIANCE : RACEMASK_HORDE)))
                 {
                     allBots.erase(bot);
                     continue;
