@@ -7028,8 +7028,8 @@ bool Player::RewardHonor(Unit* victim, uint32 groupsize, int32 honor, bool pvpto
             UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_HONORABLE_KILL, 1, 0, victim);
 			int ghonor = honor_f;
 			
-			std::string guardmsg = "You received " + std::to_string(ghonor) + " Honor for killing a Guard.";
-			std::string guardmsgap = "You received " + std::to_string(ghonor) + " Honor and Arena Points for killing a Guard.";
+			std::string guardmsg = "Du hast " + std::to_string(ghonor) + " Ehre erhalten.";
+			std::string guardmsgap = "Du hast " + std::to_string(ghonor) + " Ehre- und Arenapunkte erhalten.";
 			
 			const char * sgm = guardmsg.c_str();
 			const char * sgm_ap = guardmsgap.c_str();
@@ -7046,7 +7046,7 @@ bool Player::RewardHonor(Unit* victim, uint32 groupsize, int32 honor, bool pvpto
 			if (sWorld->getIntConfig(CONFIG_GAIN_HONOR_GUARD_GOLD) > 0)
 			{
 				int guardgold = sWorld->getIntConfig(CONFIG_GAIN_HONOR_GUARD_GOLD);
-				std::string guardgoldmsg = "You received " + std::to_string(guardgold) + " Gold for killing a Guard.";
+				std::string guardgoldmsg = "Du hast " + std::to_string(guardgold) + " Gold erhalten.";
 				const char * sgm_gold = guardgoldmsg.c_str();
 				ChatHandler(GetSession()).PSendSysMessage(sgm_gold);
 				ModifyMoney(gold * guardgold);
@@ -7077,8 +7077,8 @@ bool Player::RewardHonor(Unit* victim, uint32 groupsize, int32 honor, bool pvpto
             UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_HONORABLE_KILL, 1, 0, victim);
 			int ghonor = honor_f;
 		
-			std::string elitemsg = "You received " + std::to_string(ghonor) + " Honor for killing an Elite.";
-			std::string elitemsgap = "You received " + std::to_string(ghonor) + " Honor and Arena Points for killing an Elite.";
+			std::string elitemsg = "Du hast " + std::to_string(ghonor) + " Ehre erhalten.";
+			std::string elitemsgap = "Du hast " + std::to_string(ghonor) + " Ehre- und Arenapunkte erhalten.";
 			
 			
 			const char * sem = elitemsg.c_str();
@@ -7096,7 +7096,7 @@ bool Player::RewardHonor(Unit* victim, uint32 groupsize, int32 honor, bool pvpto
 			if (sWorld->getIntConfig(CONFIG_GAIN_HONOR_ELITE_GOLD) > 0)
 			{
 				int elitegold = sWorld->getIntConfig(CONFIG_GAIN_HONOR_ELITE_GOLD);
-				std::string elitegoldmsg = "You received " + std::to_string(elitegold) + " Gold for killing an Elite.";
+				std::string elitegoldmsg = "Du hast " + std::to_string(elitegold) + " Gold erhalten.";
 				const char * sem_gold = elitegoldmsg.c_str();
 				ChatHandler(GetSession()).PSendSysMessage(sem_gold);
 				ModifyMoney(gold * elitegold);
@@ -7127,8 +7127,8 @@ bool Player::RewardHonor(Unit* victim, uint32 groupsize, int32 honor, bool pvpto
             UpdateAchievementCriteria(ACHIEVEMENT_CRITERIA_TYPE_HONORABLE_KILL, 1, 0, victim);
 			int bhonor = honor_f;
 		
-			std::string bossmsg = "You received " + std::to_string(bhonor) + " Honor for killing a Boss.";
-			std::string bossmsgap = "You received " + std::to_string(bhonor) + " Honor and Arena Points for killing a Boss.";
+			std::string bossmsg = "Du hast " + std::to_string(bhonor) + " Ehre erhalten.";
+			std::string bossmsgap = "Du hast " + std::to_string(bhonor) + " Ehre- und Arenapunkte erhalten.";
 			
 			
 			const char * sbm = bossmsg.c_str();
@@ -7146,7 +7146,7 @@ bool Player::RewardHonor(Unit* victim, uint32 groupsize, int32 honor, bool pvpto
 			if (sWorld->getIntConfig(CONFIG_GAIN_HONOR_BOSS_GOLD) > 0)
 			{
 				int bossgold = sWorld->getIntConfig(CONFIG_GAIN_HONOR_BOSS_GOLD);
-				std::string bossgoldmsg = "You received " + std::to_string(bossgold) + " Gold for killing a Boss.";
+				std::string bossgoldmsg = "Du hast " + std::to_string(bossgold) + " Gold erhalten.";
 				const char * sbm_gold = bossgoldmsg.c_str();
 				ChatHandler(GetSession()).PSendSysMessage(sbm_gold);
 				ModifyMoney(gold * bossgold);
