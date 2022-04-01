@@ -84,7 +84,7 @@ void LFGPlayerScript::OnMapChanged(Player* player)
     //NPCBOT
     //Make sure player can't use bots outside of dungeon
     Group* group = player->GetGroup();
-    if (!group || (!map->IsDungeon() && player->isDead()))
+    if (!group || (!map->IsDungeon() && !player->isDead()))
     {
         NpcBotRegistry _alldungeonbots = sLFGMgr->GetDungeonFinderBots();
         if (_alldungeonbots.size() > 0)
@@ -238,24 +238,6 @@ void LFGGroupScript::OnDisband(Group* group)
     TC_LOG_DEBUG("lfg", "LFGScripts::OnDisband [%s]", gguid.ToString().c_str());
 
     sLFGMgr->RemoveGroupData(gguid);
-
-    /*
-    //NPCBOT
-    NpcBotRegistry _alldungeonbots = sLFGMgr->GetDungeonFinderBots();
-    if (_alldungeonbots.size() > 0)
-    {
-        for (NpcBotRegistry::const_iterator ci = _alldungeonbots.begin(); ci != _alldungeonbots.end(); ++ci)
-        {
-            Creature const* bot = *ci;
-            if (!bot->GetBotOwner()->GetSession()->PlayerLoading() && !bot->GetBotOwner()->GetMap()->IsDungeon())
-            {
-                bot->GetBotAI()->ResetBotAI(BOTAI_RESET_LFG);
-                sLFGMgr->RemoveDungeonFinderBotFromList(bot);
-                bot->GetBotOwner()->GetBotMgr()->RemoveBot(bot->GetGUID(), BOT_REMOVE_DISMISS);
-            }
-        }
-    }
-    */
 }
 
 void LFGGroupScript::OnChangeLeader(Group* group, ObjectGuid newLeaderGuid, ObjectGuid oldLeaderGuid)
