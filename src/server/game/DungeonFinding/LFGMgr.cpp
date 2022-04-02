@@ -1118,11 +1118,47 @@ void LFGMgr::MakeNewGroup(LfgProposal const& proposal)
                     continue;
                 }
 
-                if (BotMgr::FilterRaces() && bot->GetBotClass() < BOT_CLASS_EX_START && (bot->GetRaceMask() & RACEMASK_ALL_PLAYABLE) &&
-                    (bot->GetRaceMask() & ((player->GetRaceMask() & RACEMASK_ALLIANCE) ? RACEMASK_ALLIANCE : RACEMASK_HORDE)))
+                if (BotMgr::FilterRaces())
                 {
-                    allBots.erase(bot);
-                    continue;
+                    uint8 botFaction;
+                    switch (bot->GetBotAI()->GetPlayerRace())
+                    {
+                        case RACE_HUMAN:
+                            botFaction = 3;
+                            break;
+                        case RACE_ORC:
+                            botFaction = 2;
+                            break;
+                        case RACE_DWARF:
+                            botFaction = 3;
+                            break;
+                        case RACE_NIGHTELF:
+                            botFaction = 3;
+                            break;
+                        case RACE_UNDEAD_PLAYER:
+                            botFaction = 2;
+                            break;
+                        case RACE_TAUREN:
+                            botFaction = 2;
+                            break;
+                        case RACE_GNOME:
+                            botFaction = 3;
+                            break;
+                        case RACE_TROLL:
+                            botFaction = 2;
+                            break;
+                        case RACE_BLOODELF:
+                            botFaction = 2;
+                            break;
+                        case RACE_DRAENEI:
+                            botFaction = 3;
+                            break;
+                    }
+                    if (botFaction != player->GetFaction())
+                    {
+                        allBots.erase(bot);
+                        continue;
+                    }
                 }
 
                 BotMgr* mgr = player->GetBotMgr();
