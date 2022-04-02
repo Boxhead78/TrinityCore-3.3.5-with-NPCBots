@@ -679,7 +679,7 @@ enum BotCommonValues
 //ARCHMAGE
   //modify
     SPELL_BRILLIANCE_AURA               = 1234,
-    SPELL_FIREBALL                      = 9488,
+    SPELL_FIREBALL_BOT                  = 9488,
     SPELL_BLIZZARD                      = 15783,
     SPELL_SUMMON_WATER_ELEMENTAL        = 35593,
     SPELL_WATERBOLT                     = 72898,

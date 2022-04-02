@@ -16157,7 +16157,7 @@ void bot_ai::InitBotCustomSpells()
     BotCustomSpells.insert(SPELL_REPLENISH_MANA);//11
     BotCustomSpells.insert(SPELL_REPLENISH_HEALTH);//12
     BotCustomSpells.insert(SPELL_BRILLIANCE_AURA);//13
-    BotCustomSpells.insert(SPELL_FIREBALL);//14
+    BotCustomSpells.insert(SPELL_FIREBALL_BOT);//14
     BotCustomSpells.insert(SPELL_BLIZZARD);//15
     BotCustomSpells.insert(SPELL_SUMMON_WATER_ELEMENTAL);//16
     BotCustomSpells.insert(SPELL_WATERBOLT);//17
@@ -16566,7 +16566,7 @@ void bot_ai::InitBotCustomSpells()
 
     //14) FIREBALL (MAIN_ATTACK)
     //TODO: balance
-    spellId = SPELL_FIREBALL; //9488
+    spellId = SPELL_FIREBALL_BOT; //9488
     sinfo = const_cast<SpellInfo*>(sSpellMgr->GetSpellInfo(spellId));
 
     sinfo->SpellLevel = 20;

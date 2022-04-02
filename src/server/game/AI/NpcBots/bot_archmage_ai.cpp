@@ -20,7 +20,7 @@ TODO: mass tele
 
 enum ArchmageBaseSpells
 {
-    MAIN_ATTACK_1           = SPELL_FIREBALL,
+    MAIN_ATTACK_1           = SPELL_FIREBALL_BOT,
     BLIZZARD_1              = SPELL_BLIZZARD,
     SUMMON_WATER_ELEMENTAL_1= SPELL_SUMMON_WATER_ELEMENTAL
 };
