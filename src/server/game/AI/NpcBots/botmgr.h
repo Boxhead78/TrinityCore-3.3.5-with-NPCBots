@@ -126,7 +126,7 @@ class BotMgr
         uint8 GetNpcBotSlot(Creature const* bot) const;
         uint8 GetNpcBotSlotByRole(uint32 roles, Creature const* bot) const;
         uint32 GetAllNpcBotsClassMask() const;
-        static uint8 GetMaxNpcBots();
+        static uint8 GetMaxNpcBots(Player const* player);
         static uint8 GetNpcBotXpReduction();
         static int32 GetBotInfoPacketsLimit();
         static bool LimitBots(Map const* map);

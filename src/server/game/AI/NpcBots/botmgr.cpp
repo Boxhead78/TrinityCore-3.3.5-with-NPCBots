@@ -446,9 +446,25 @@ uint8 BotMgr::GetNpcBotXpReduction()
     return _xpReductionNpcBots;
 }
 
-uint8 BotMgr::GetMaxNpcBots()
+uint8 BotMgr::GetMaxNpcBots(Player const* player)
 {
-    return _maxNpcBots <= MAXRAIDSIZE - 1 ? _maxNpcBots : MAXRAIDSIZE - 1;
+    uint32 maxBots;
+    if (_maxNpcBots == 0)
+    {
+        if (player->GetLevel() == 80)
+            maxBots = 24;
+        else if (player->GetLevel() <= 70)
+            maxBots = 9;
+        else if (player->GetLevel() <= 69)
+            maxBots = 4;
+        else if (player->GetLevel() <= 14)
+            maxBots = 1;
+    }
+    else
+    {
+        maxBots = _maxNpcBots <= MAXRAIDSIZE - 1 ? _maxNpcBots : MAXRAIDSIZE - 1;
+    }
+    return maxBots;
 }
 
 int32 BotMgr::GetBotInfoPacketsLimit()
@@ -940,10 +956,10 @@ BotAddResult BotMgr::AddBot(Creature* bot, bool takeMoney)
         ch.PSendSysMessage(bot_ai::LocalizedNpcText(GetOwner(), BOT_TEXT_BOTADDFAIL_TELEPORTED).c_str(), bot->GetName().c_str());
         return BOT_ADD_BUSY;
     }
-    if (!temporary && _owner->GetNpcBotsCount() >= GetMaxNpcBots())
+    if (!temporary && _owner->GetNpcBotsCount() >= GetMaxNpcBots(_owner))
     {
         ChatHandler ch(_owner->GetSession());
-        ch.PSendSysMessage(bot_ai::LocalizedNpcText(GetOwner(), BOT_TEXT_HIREFAIL_MAXBOTS).c_str(), GetMaxNpcBots());
+        ch.PSendSysMessage(bot_ai::LocalizedNpcText(GetOwner(), BOT_TEXT_HIREFAIL_MAXBOTS).c_str(), GetMaxNpcBots(_owner));
         return BOT_ADD_MAX_EXCEED;
     }
     if (!temporary && HaveBot() && _maxClassNpcBots)
