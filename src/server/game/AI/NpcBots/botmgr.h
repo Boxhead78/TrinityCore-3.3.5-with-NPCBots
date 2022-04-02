@@ -189,7 +189,7 @@ class BotMgr
         //CONFIRMEND UNSAFE (charmer,owner)
         static void TeleportBot(Creature* bot, Map* newMap, Position* pos);
 
-        static void SetBotTalentsForDungeon(Creature const* bot, uint32 botrole);
+        static void SetRandomBotTalentsForGroup(Creature const* bot, uint32 botrole);
 
         AoeSpotsVec const& GetAoeSpots() const { return _aoespots; }
         AoeSpotsVec& GetAoeSpots() { return _aoespots; }

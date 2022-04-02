@@ -1186,7 +1186,7 @@ void LFGMgr::MakeNewGroup(LfgProposal const& proposal)
                         _dungeonfinderbots.insert(newBot);
                         botsNeeded--;
                         //Set bot talents and erase it from list
-                        BotMgr::SetBotTalentsForDungeon(bot, BOT_ROLE_TANK);
+                        mgr->SetRandomBotTalentsForGroup(bot, BOT_ROLE_TANK);
                         allBots.erase(bot);
                         //TC_LOG_ERROR("entities.unit", "HIRE_NBOT_ENTRY: bot %s hired as tank!", bot->GetName().c_str());
                         continue;
@@ -1211,7 +1211,7 @@ void LFGMgr::MakeNewGroup(LfgProposal const& proposal)
                         _dungeonfinderbots.insert(newBot);
                         botsNeeded--;
                         //Set bot talents and erase it from list
-                        BotMgr::SetBotTalentsForDungeon(bot, BOT_ROLE_HEAL);
+                        mgr->SetRandomBotTalentsForGroup(bot, BOT_ROLE_HEAL);
                         allBots.erase(bot);
                         //TC_LOG_ERROR("entities.unit", "HIRE_NBOT_ENTRY: bot %s hired as heal!", bot->GetName());
                         continue;
@@ -1239,7 +1239,7 @@ void LFGMgr::MakeNewGroup(LfgProposal const& proposal)
                         _dungeonfinderbots.insert(newBot);
                         botsNeeded--;
                         //Set bot talents and erase it from list
-                        BotMgr::SetBotTalentsForDungeon(bot, BOT_ROLE_DPS);
+                        mgr->SetRandomBotTalentsForGroup(bot, BOT_ROLE_DPS);
                         allBots.erase(bot);
                         //TC_LOG_ERROR("entities.unit", "HIRE_NBOT_ENTRY: bot %s hired as dps!", bot->GetName());
                         continue;

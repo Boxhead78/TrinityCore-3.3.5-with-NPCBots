@@ -1597,7 +1597,7 @@ float BotMgr::GetBotManaMod()
     return _mult_mana;
 }
 //Boxhead: Set bot roles and talents in dungeon
-void BotMgr::SetBotTalentsForDungeon(Creature const* bot, uint32 botrole)
+void BotMgr::SetRandomBotTalentsForGroup(Creature const* bot, uint32 botrole)
 {
     uint8 botclass = bot->GetBotClass();
 
