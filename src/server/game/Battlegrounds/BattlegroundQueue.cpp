@@ -695,8 +695,8 @@ bool BattlegroundQueue::CheckNormalMatch(Battleground* bg_template, Battleground
         if (abs((int32)(m_SelectionPools[TEAM_HORDE].GetPlayerCount() - m_SelectionPools[TEAM_ALLIANCE].GetPlayerCount())) > 2)
             return false;
     }
-    //allow 1v0 if debug bg
-    if (sBattlegroundMgr->isTesting() && bg_template->isBattleground() && (m_SelectionPools[TEAM_ALLIANCE].GetPlayerCount() || m_SelectionPools[TEAM_HORDE].GetPlayerCount()))
+    //allow 1v0 if debug bg TODO: ADD ARENA BOTS
+    if ((sBattlegroundMgr->isTesting() || sBattlegroundMgr->isSoloMode()) && bg_template->isBattleground() && (m_SelectionPools[TEAM_ALLIANCE].GetPlayerCount() || m_SelectionPools[TEAM_HORDE].GetPlayerCount()))
         return true;
     //return true if there are enough players in selection pools - enable to work .debug bg command correctly
     return m_SelectionPools[TEAM_ALLIANCE].GetPlayerCount() >= minPlayers && m_SelectionPools[TEAM_HORDE].GetPlayerCount() >= minPlayers;
@@ -834,7 +834,7 @@ void BattlegroundQueue::BattlegroundQueueUpdate(uint32 /*diff*/, BattlegroundTyp
         MaxPlayersPerTeam = arenaType;
         MinPlayersPerTeam = sBattlegroundMgr->isArenaTesting() ? 1 : arenaType;
     }
-    else if (sBattlegroundMgr->isTesting())
+    else if (sBattlegroundMgr->isTesting() || sBattlegroundMgr->isSoloMode())
         MinPlayersPerTeam = 1;
 
     m_SelectionPools[TEAM_ALLIANCE].Init();

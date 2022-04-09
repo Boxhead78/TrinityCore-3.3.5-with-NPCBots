@@ -22,6 +22,7 @@
 #include "DBCEnums.h"
 #include "Battleground.h"
 #include "BattlegroundQueue.h"
+#include "Config.h"
 #include <unordered_map>
 
 struct BattlemasterListEntry;
@@ -68,6 +69,10 @@ class TC_GAME_API BattlegroundMgr
         ~BattlegroundMgr();
 
     public:
+        //NPCBOT
+        NpcBotRegistryBG GetBGBots() const { return _bgbots; };
+        void RemoveBGBotFromList(Creature* bot) { _bgbots.erase(bot); };
+
         static BattlegroundMgr* instance();
 
         void Update(uint32 diff);
@@ -110,6 +115,7 @@ class TC_GAME_API BattlegroundMgr
 
         bool isArenaTesting() const { return m_ArenaTesting; }
         bool isTesting() const { return m_Testing; }
+        bool isSoloMode() const { return sConfigMgr->GetBoolDefault("SoloPvP.Enable", false); }
 
         static BattlegroundQueueTypeId BGQueueTypeId(BattlegroundTypeId bgTypeId, uint8 arenaType);
         static BattlegroundTypeId BGTemplateId(BattlegroundQueueTypeId bgQueueTypeId);
@@ -131,6 +137,8 @@ class TC_GAME_API BattlegroundMgr
                 return itr->second;
             return BATTLEGROUND_TYPE_NONE;
         }
+        //NPCBOT
+        NpcBotRegistryBG _bgbots;
 
     private:
         bool CreateBattleground(BattlegroundTemplate const* bgTemplate);

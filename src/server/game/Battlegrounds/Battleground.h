@@ -24,6 +24,8 @@
 #include "Position.h"
 #include "SharedDefines.h"
 #include <map>
+ //NPCBOTS
+#include "botdatamgr.h"
 
 namespace WorldPackets
 {
@@ -443,6 +445,8 @@ class TC_GAME_API Battleground
         virtual WorldSafeLocsEntry const* GetClosestGraveyard(Player* player);
 
         virtual void AddPlayer(Player* player);                // must be implemented in BG subclass
+
+        virtual void AddPlayerNPCBots(Player* player);
 
         void AddOrSetPlayerToCorrectBgGroup(Player* player, uint32 team);
 
