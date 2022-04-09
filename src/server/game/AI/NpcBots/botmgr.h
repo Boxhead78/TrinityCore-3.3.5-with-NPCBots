@@ -191,6 +191,8 @@ class BotMgr
 
         static void SetRandomBotTalentsForGroup(Creature const* bot, uint32 botrole);
 
+        static uint32 GetBotTeam(Creature const* bot);
+
         AoeSpotsVec const& GetAoeSpots() const { return _aoespots; }
         AoeSpotsVec& GetAoeSpots() { return _aoespots; }
 

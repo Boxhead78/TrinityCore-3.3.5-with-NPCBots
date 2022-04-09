@@ -30,9 +30,6 @@
 #include "ScriptMgr.h"
 #include "SharedDefines.h"
 #include "WorldSession.h"
-//NPCBOT
-#include "bot_ai.h"
-#include "botmgr.h"
 
 namespace lfg
 {
@@ -80,27 +77,6 @@ void LFGPlayerScript::OnLogin(Player* player, bool /*loginFirst*/)
 void LFGPlayerScript::OnMapChanged(Player* player)
 {
     Map const* map = player->GetMap();
-
-    //NPCBOT
-    //Make sure player can't use bots outside of dungeon
-    Group* group = player->GetGroup();
-    if (!group || (!map->IsDungeon() && !player->isDead()))
-    {
-        NpcBotRegistry _alldungeonbots = sLFGMgr->GetDungeonFinderBots();
-        if (_alldungeonbots.size() > 0)
-        {
-            for (NpcBotRegistry::const_iterator ci = _alldungeonbots.begin(); ci != _alldungeonbots.end(); ++ci)
-            {
-                Creature const* bot = *ci;
-                if (!bot->GetBotAI()->IAmFree())
-                {
-                    bot->GetBotAI()->ResetBotAI(BOTAI_RESET_LFG);
-                    player->GetBotMgr()->RemoveBot(bot->GetGUID(), BOT_REMOVE_DISMISS);
-                }
-                sLFGMgr->RemoveDungeonFinderBotFromList(bot);
-            }
-        }
-    }
 
     if (sLFGMgr->inLfgDungeonMap(player->GetGUID(), map->GetId(), map->GetDifficulty()))
     {

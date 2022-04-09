@@ -12,6 +12,7 @@
 #include "Group.h"
 #include "InstanceScript.h"
 #include "Language.h"
+#include "LFGMgr.h"
 #include "Log.h"
 #include "Map.h"
 #include "MapManager.h"
@@ -513,6 +514,56 @@ void BotMgr::Update(uint32 diff)
     if (partyCombat)
         bot_ai::CalculateAoeSpots(_owner, _aoespots);
 
+    //Despawn all Dungeon bots if conditions met
+    NpcBotRegistry _alldungeonbots = sLFGMgr->GetDungeonFinderBots();
+    if (_alldungeonbots.size() > 0)
+    {
+        for (NpcBotRegistry::const_iterator ci = _alldungeonbots.begin(); ci != _alldungeonbots.end(); ++ci)
+        {
+
+            Creature const* bot = *ci;
+            ai = bot->GetBotAI();
+
+            if (!ai->GetBotOwnerGuid())
+            {
+                sLFGMgr->RemoveDungeonFinderBotFromList(bot);
+                continue;
+            }
+
+            if (ai->IAmFree())
+                continue;
+
+            if (!bot->IsInWorld())
+            {
+                continue;
+            }
+            if (_owner == bot->GetBotOwner())
+            {
+                Group* gr = _owner->GetGroup();
+                if (gr)
+                {
+                    if (!gr->IsMember(bot->GetGUID()))
+                    {
+                        if (!ai->IAmFree())
+                        {
+                            bot->GetBotAI()->ResetBotAI(BOTAI_RESET_LFG);
+                            RemoveBot(bot->GetGUID(), BOT_REMOVE_DISMISS);
+                        }
+                        sLFGMgr->RemoveDungeonFinderBotFromList(bot);
+                    }
+                }
+                else
+                {
+                    if (!ai->IAmFree())
+                    {
+                        bot->GetBotAI()->ResetBotAI(BOTAI_RESET_LFG);
+                        RemoveBot(bot->GetGUID(), BOT_REMOVE_DISMISS);
+                    }
+                    sLFGMgr->RemoveDungeonFinderBotFromList(bot);
+                }
+            }
+        }
+    }
     for (BotMap::const_iterator itr = _bots.begin(); itr != _bots.end(); ++itr)
     {
         //guid = itr->first;
