@@ -453,14 +453,14 @@ uint8 BotMgr::GetMaxNpcBots(Player const* player)
     uint32 maxBots;
     if (_maxNpcBots == 0)
     {
-        if (player->GetLevel() == 80)
-            maxBots = 24;
-        else if (player->GetLevel() <= 70)
-            maxBots = 9;
+        if (player->GetLevel() <= 14)
+            maxBots = 1;
         else if (player->GetLevel() <= 69)
             maxBots = 4;
-        else if (player->GetLevel() <= 14)
-            maxBots = 1;
+        else if (player->GetLevel() <= 79)
+            maxBots = 9;
+        else if (player->GetLevel() == 80)
+            maxBots = 24;
     }
     else
     {
