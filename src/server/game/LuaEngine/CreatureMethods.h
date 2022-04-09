@@ -1138,6 +1138,27 @@ namespace LuaCreature
     }
 
     /**
+     * Sets the [Creature]'s base weapon damage.
+     *
+     * @param float Value : Damage Multiplier
+     */
+    int SetMaximumTrueDamage(lua_State* L, Creature* creature)
+    {
+        uint32 dmgAmt = Eluna::CHECKVAL<uint32>(L, 2);
+
+        creature->SetBaseWeaponDamage(BASE_ATTACK, MINDAMAGE, dmgAmt * 0.5);
+        creature->SetBaseWeaponDamage(BASE_ATTACK, MAXDAMAGE, dmgAmt);
+        creature->SetBaseWeaponDamage(OFF_ATTACK, MINDAMAGE, dmgAmt * 0.5);
+        creature->SetBaseWeaponDamage(OFF_ATTACK, MAXDAMAGE, dmgAmt);
+        creature->SetBaseWeaponDamage(RANGED_ATTACK, MINDAMAGE, dmgAmt * 0.5);
+        creature->SetBaseWeaponDamage(RANGED_ATTACK, MAXDAMAGE, dmgAmt);
+        creature->SetStatFlatModifier(UNIT_MOD_ATTACK_POWER, BASE_VALUE, dmgAmt);
+        creature->SetStatFlatModifier(UNIT_MOD_ATTACK_POWER_RANGED, BASE_VALUE, dmgAmt);
+        
+        return 0;
+    }
+
+    /**
      * Sets the [Creature] as in combat with all [Player]s in the dungeon instance.
      *
      * This is used by raid bosses to prevent Players from using out-of-combat

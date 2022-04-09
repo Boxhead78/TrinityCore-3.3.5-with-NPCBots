@@ -813,6 +813,7 @@ ElunaRegister<Creature> CreatureMethods[] =
     { "SetWanderRadius", &LuaCreature::SetWanderRadius },
     { "SetInCombatWithZone", &LuaCreature::SetInCombatWithZone },
     { "SetDisableReputationGain", &LuaCreature::SetDisableReputationGain },
+    { "SetMaximumTrueDamage", &LuaCreature::SetMaximumTrueDamage },
 #if defined(TRINITY) || AZEROTHCORE
     { "SetLootMode", &LuaCreature::SetLootMode },
 #endif

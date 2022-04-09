@@ -1873,5 +1873,44 @@ void BotMgr::SetRandomBotTalentsForGroup(Creature const* bot, uint32 botrole)
 
     bot->GetBotAI()->SetSpec(spec, true);
 
-    //TODO: Remove bots from owner and group after dungeon. iteriate through new bot object list; fix bug: all bots healer symbol
+uint32 BotMgr::GetBotTeam(Creature const* bot)
+{
+    uint32 botTeam;
+    switch (bot->GetBotAI()->GetPlayerRace())
+    {
+    case RACE_HUMAN:
+        botTeam = ALLIANCE;
+        break;
+    case RACE_ORC:
+        botTeam = HORDE;
+        break;
+    case RACE_DWARF:
+        botTeam = ALLIANCE;
+        break;
+    case RACE_NIGHTELF:
+        botTeam = ALLIANCE;
+        break;
+    case RACE_UNDEAD_PLAYER:
+        botTeam = HORDE;
+        break;
+    case RACE_TAUREN:
+        botTeam = HORDE;
+        break;
+    case RACE_GNOME:
+        botTeam = ALLIANCE;
+        break;
+    case RACE_TROLL:
+        botTeam = HORDE;
+        break;
+    case RACE_BLOODELF:
+        botTeam = HORDE;
+        break;
+    case RACE_DRAENEI:
+        botTeam = ALLIANCE;
+        break;
+    default:
+        botTeam = 0;
+        break;
+    }
+    return botTeam;
 }
