@@ -4791,7 +4791,7 @@ void bot_ai::_updateRations()
 
     //drink
     if (!feast_mana && me->GetMaxPower(POWER_MANA) > 1 && !me->HasAuraType(SPELL_AURA_MOUNTED) && !me->isMoving() && CanDrink() &&
-        !me->IsInCombat() && !me->GetVehicle() && !IsCasting() && GetManaPCT(me) < 75 && urand(0, 100) < 20)
+        !me->IsInCombat() && !me->GetVehicle() && !IsCasting() && GetManaPCT(me) < 95 && urand(0, 100) < 20)
     {
         //me->SetStandState(UNIT_STAND_STATE_SIT);
         CastSpellExtraArgs args(TRIGGERED_FULL_MASK);
@@ -4800,7 +4800,7 @@ void bot_ai::_updateRations()
 
     //eat
     if (!feast_health && !me->HasAuraType(SPELL_AURA_MOUNTED) && !me->isMoving() && CanEat() &&
-        !me->IsInCombat() && !me->GetVehicle() && !IsCasting() && GetHealthPCT(me) < 80 && urand(0, 100) < 20)
+        !me->IsInCombat() && !me->GetVehicle() && !IsCasting() && GetHealthPCT(me) < 95 && urand(0, 100) < 20)
     {
         //me->SetStandState(UNIT_STAND_STATE_SIT);
         CastSpellExtraArgs args(TRIGGERED_FULL_MASK);
