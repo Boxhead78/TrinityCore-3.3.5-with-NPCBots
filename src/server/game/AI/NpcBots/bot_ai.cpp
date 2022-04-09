@@ -5661,6 +5661,19 @@ void bot_ai::_OnHealthUpdate() const
     //Add Health Multiplier
     m_totalhp *= BotMgr::GetBotHealthMod();
 
+    //Level multipliers
+    if (mylevel >= 40)
+        m_totalhp *= 1.05;
+
+    if (mylevel >= 60)
+        m_totalhp *= 1.1;
+
+    if (mylevel >= 70)
+        m_totalhp *= 1.1;
+
+    if (mylevel >= 80)
+        m_totalhp *= 1.1;
+
     //hp bonuses
     uint8 bonuspct = 0;
     //Endurance Training
@@ -5731,6 +5744,19 @@ void bot_ai::_OnManaUpdate() const
 
     //Add Mana Multiplier
     m_basemana *= BotMgr::GetBotManaMod();
+
+    //Level multipliers
+    if (mylevel >= 40)
+        m_basemana *= 1.1;
+
+    if (mylevel >= 60)
+        m_basemana *= 1.2;
+
+    if (mylevel >= 70)
+        m_basemana *= 1.2;
+
+    if (mylevel >= 80)
+        m_basemana *= 1.2;
 
     //mana bonuses
     uint8 bonuspct = 0;
