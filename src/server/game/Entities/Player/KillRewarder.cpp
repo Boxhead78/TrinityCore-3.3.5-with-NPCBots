@@ -22,6 +22,7 @@
 #include "Group.h"
 #include "Guild.h"
 #include "GuildMgr.h"
+#include "LFGGroupData.h"
 #include "InstanceScript.h"
 #include "Pet.h"
 #include "Player.h"
@@ -174,6 +175,15 @@ inline void KillRewarder::_RewardXP(Player* player, float rate)
             if (victim->GetCreatureTemplate()->rank == CREATURE_ELITE_RARE || victim->GetCreatureTemplate()->rank == CREATURE_ELITE_RAREELITE)
             {
                 xp *= 20;
+            }
+        }
+
+        //Don't give XP outside of dungeons if in LFG Group now
+        if (Group* gr = player->GetGroup())
+        {
+            if (player->GetGroup()->isLFGGroup() && !player->GetMap()->IsDungeon())
+            {
+                xp = 0;
             }
         }
 
