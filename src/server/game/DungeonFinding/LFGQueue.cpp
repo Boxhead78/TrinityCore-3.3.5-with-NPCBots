@@ -424,7 +424,7 @@ LfgCompatibility LFGQueue::CheckCompatibility(GuidList check)
     }
 
     // Group with less that MAXGROUPSIZE members always compatible
-    if (!sLFGMgr->IsSoloLFG() && !BotMgr::FillNpcBotsDungeons() && numPlayers != MAXGROUPSIZE) //solo lfg
+    if (!sLFGMgr->IsSoloLFG() && !BotMgr::FillNpcBotsDungeons() && check.size() == 1 && numPlayers != MAXGROUPSIZE) //solo lfg
     {
         TC_LOG_DEBUG("lfg.queue.match.compatibility.check", "Guids: (%s) single group. Compatibles", GetDetailedMatchRoles(check).c_str());
         LfgQueueDataContainer::iterator itQueue = QueueDataStore.find(check.front());

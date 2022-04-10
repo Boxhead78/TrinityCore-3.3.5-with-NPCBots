@@ -427,9 +427,9 @@ void LFGMgr::JoinLfg(Player* player, uint8 roles, LfgDungeonSet& dungeons, const
     Group* grp = player->GetGroup();
     ObjectGuid guid = player->GetGUID();
     ObjectGuid gguid = grp ? grp->GetGUID() : guid;
+    LfgJoinResultData joinData;
     GuidSet players;
     uint32 rDungeonId = 0;
-    LfgJoinResultData joinData;
     bool isContinue = grp && grp->isLFGGroup() && GetState(gguid) != LFG_STATE_FINISHED_DUNGEON;
 
     if (player->HaveBot())
@@ -1049,9 +1049,9 @@ void LFGMgr::MakeNewGroup(LfgProposal const& proposal)
 
     Group* grp = proposal.group ? sGroupMgr->GetGroupByGUID(proposal.group.GetCounter()) : nullptr;
     LfgProposal proposalmod = proposal;
-    for (GuidList::const_iterator it = players.begin(); it != players.end(); ++it)
+    for (LfgProposalPlayerContainer::const_iterator it = proposal.players.begin(); it != proposal.players.end(); ++it)
     {
-        ObjectGuid pguid = (*it);
+        ObjectGuid pguid = it->first;
         Player* player = ObjectAccessor::FindConnectedPlayer(pguid);
         if (!player)
             continue;
@@ -1368,7 +1368,7 @@ void LFGMgr::UpdateProposal(uint32 proposalId, ObjectGuid guid, bool accept)
         if (itPlayers->second.accept != LFG_ANSWER_AGREE)   // No answer (-1) or not accepted (0)
             allAnswered = false;
 
-    if (!sLFGMgr->IsSoloLFG() && !BotMgr::FillNpcBotsDungeons() && !allAnswered)
+    if (!allAnswered)
     {
         for (LfgProposalPlayerContainer::const_iterator it = proposal.players.begin(); it != proposal.players.end(); ++it)
             SendLfgUpdateProposal(it->first, proposal);
