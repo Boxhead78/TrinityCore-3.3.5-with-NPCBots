@@ -7245,6 +7245,7 @@ bool bot_ai::OnGossipSelect(Player* player, Creature* creature/* == me*/, uint32
         {
             if (Aura* trans = me->AddAura(MODEL_TRANSITION, me))
             {
+                me->SetUInt32Value(UNIT_VIRTUAL_ITEM_SLOT_ID + 1, 0); //debug: remove offhand visuals
                 trans->SetDuration(500);
                 trans->SetMaxDuration(500);
             }
@@ -14747,6 +14748,19 @@ bool bot_ai::GlobalUpdate(uint32 diff)
         {
             me->SetFloatValue(UNIT_FIELD_BOUNDINGRADIUS, DEFAULT_PLAYER_BOUNDING_RADIUS * me->GetObjectScale());
             me->SetFloatValue(UNIT_FIELD_COMBATREACH,  DEFAULT_PLAYER_COMBAT_REACH * me->GetObjectScale());
+
+            //debug: restore offhand visual if needed
+            if (me->GetUInt32Value(UNIT_VIRTUAL_ITEM_SLOT_ID + 1) == 0)
+            {
+                if (CanChangeEquip(BOT_SLOT_OFFHAND) && _equips[BOT_SLOT_OFFHAND])
+                    me->SetUInt32Value(UNIT_VIRTUAL_ITEM_SLOT_ID + 1, _equips[BOT_SLOT_OFFHAND]->GetEntry());
+                else
+                {
+                    int8 id = 1;
+                    EquipmentInfo const* einfo = sObjectMgr->GetEquipmentInfo(me->GetEntry(), id);
+                    me->SetUInt32Value(UNIT_VIRTUAL_ITEM_SLOT_ID + 1, einfo->ItemEntry[BOT_SLOT_OFFHAND]);
+                }
+            }
         }
         //end DEBUG
 
